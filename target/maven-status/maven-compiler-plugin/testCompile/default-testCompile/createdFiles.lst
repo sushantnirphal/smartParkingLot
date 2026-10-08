@@ -1,0 +1,14 @@
+com\parking\lot\repository\RepositoryQueriesTest.class
+com\parking\lot\testsupport\TestLotSeeder.class
+com\parking\lot\F2MySqlConcurrencyIT.class
+com\parking\lot\AvailabilityIntegrationTest.class
+com\parking\lot\ParkingConcurrencyTest.class
+com\parking\lot\ApiContractTest.class
+com\parking\lot\testsupport\AbstractIntegrationTest.class
+com\parking\lot\strategy\AllocationPolicyTest.class
+com\parking\lot\strategy\PricingStrategiesTest.class
+com\parking\lot\testsupport\TestLotSeeder$1.class
+com\parking\lot\service\TicketFactoryTest.class
+com\parking\lot\ExitFlowIntegrationTest.class
+com\parking\lot\lock\LotLockManagerTest.class
+com\parking\lot\EntryFlowIntegrationTest.class

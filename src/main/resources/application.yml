@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: parking-lot-system
+
+
+  # ---------------------------------------------------------------------------
+  # Default (local / CI) datasource: H2 running in MySQL compatibility mode.
+  # Use the `mysql` profile for a real MySQL 8 instance (architecture §1 stack).
+  # ---------------------------------------------------------------------------
+  datasource:
+    url: jdbc:h2:mem:parking;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: "sa"
+
+  jpa:
+    hibernate:
+      # Architecture acceptance: schema comes from Flyway only - never hbm2ddl update.
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.default_schema: PUBLIC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+server:
+  port: 8081
+  # Every gate action must be traceable (architecture §9 observability)
+  tomcat:
+    max-threads: 50
+
+management:
+  endpoints:
+    web:
+      # Contract rule: GET /health and GET /metrics (architecture §8 endpoint #8)
+      base-path: /
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+parking:
+  allocation-policy: nearest-entry   # nearest-entry | lowest-floor
+  pricing-strategy: ""               # blank = follow fee_rate.strategy (N3)
+  allow-motorcycle-on-car: false     # architecture §5 vehicle-type rules
+  lock-timeout-ms: 2000              # architecture §7 -> 503 GATE_BUSY
+  currency: INR
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{traceId:-}] %logger{36} - %msg%n"
+  level:
+    com.parking.lot: INFO
